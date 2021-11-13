@@ -16,6 +16,7 @@
       ></vue-slider>
     </div>
     <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random chart</md-button>
+    <md-button class="md-raised md-accent" @click="toggleRandomDataSet()">Toggle random</md-button>
   </div>
 </template>
 
@@ -93,7 +94,12 @@ export default {
         data: this.getSin(this.points, Math.floor(Math.random() * 26)),
         pointRadius: 0,
         borderWidth: 7,
+        hidden: false,
       };
+      this.updateChart();
+    },
+    toggleRandomDataSet() {
+      this.randomWave.hidden = !this.randomWave.hidden;
       this.updateChart();
     },
     getSin(points, freq) {

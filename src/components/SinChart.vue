@@ -15,8 +15,25 @@
           :tooltip-formatter="formatter"
       ></vue-slider>
     </div>
-    <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random chart</md-button>
+    <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random</md-button>
     <md-button class="md-raised md-accent" @click="toggleRandomDataSet()">Toggle random</md-button>
+    <md-button class="md-raised md-primary">New card</md-button>
+    <div class="card-holder">
+      <md-card class="md-primary">
+        <md-card-header>
+          <md-card-header-text>
+            <div class="md-title">Cool</div>
+          </md-card-header-text>
+        </md-card-header>
+      </md-card>
+      <md-card class="md-accent">
+        <md-card-header>
+          <md-card-header-text>
+            <div class="md-title">Uncool</div>
+          </md-card-header-text>
+        </md-card-header>
+      </md-card>
+    </div>
   </div>
 </template>
 
@@ -137,5 +154,15 @@ export default {
 
 .slider-holder {
   margin: 30px 0;
+}
+
+.card-holder {
+  margin: 20px 0;
+}
+
+.md-card {
+  width: 160px;
+  margin: 0;
+  display: inline-block;
 }
 </style>

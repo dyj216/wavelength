@@ -6,10 +6,12 @@
     <vue-slider
       @change="updateData()"
       v-model="frequency"
-      :min="1"
-      :max="10"
+      :min="0"
+      :max="25"
       :interval="1"
-      :marks="true"
+      :marks="false"
+      :tooltip-placement="'bottom'"
+      :tooltip-formatter="formatter"
     ></vue-slider>
   </div>
 </template>
@@ -42,7 +44,8 @@ export default {
         },
       },
       pointCount: 1000,
-      frequency: 1,
+      frequency: 0,
+      formatter: '{value} Hz',
     }
   },
   mounted () {

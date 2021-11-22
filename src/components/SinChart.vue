@@ -1,5 +1,5 @@
 <template>
-  <div class="small">
+  <div class="content">
     <div class="chart">
       <line-chart :chart-data="datacollection" :options="options"></line-chart>
     </div>
@@ -168,9 +168,9 @@ export default {
 </script>
 
 <style>
-.small {
+.content {
   position: relative;
-  width: 40vw;
+  width: 90vw;
   margin: auto;
 }
 

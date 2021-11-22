@@ -18,7 +18,7 @@
     <div>
       <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random</md-button>
       <md-button class="md-raised md-accent" @click="toggleRandomDataSet()">Toggle random</md-button>
-      <md-button class="md-raised md-primary">New card</md-button>
+      <md-button class="md-raised md-primary" @click="getNewWords()">New card</md-button>
     </div>
     <div v-if="!this.randomWave.hidden">
       <p>Wave difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
@@ -27,14 +27,14 @@
       <md-card class="md-primary">
         <md-card-header>
           <md-card-header-text>
-            <div class="md-title">Cool</div>
+            <div class="md-title">{{ this.words[0] }}</div>
           </md-card-header-text>
         </md-card-header>
       </md-card>
       <md-card class="md-accent">
         <md-card-header>
           <md-card-header-text>
-            <div class="md-title">Uncool</div>
+            <div class="md-title">{{ this.words[1] }}</div>
           </md-card-header-text>
         </md-card-header>
       </md-card>
@@ -46,6 +46,7 @@
 import LineChart from './LineChart.js'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import {cards} from './cards'
 
 export default {
   components: {
@@ -77,11 +78,15 @@ export default {
       frequency: 0,
       formatter: v => v * 4 + ' %',
       randomFrequency: 0,
-      randomWave: {}
+      randomWave: {},
+      cards: cards,
+      usedCards: [],
+      words: [],
     }
   },
   mounted() {
     this.getNewRandom();
+    this.getNewWords();
   },
   methods: {
     updateChart() {
@@ -113,6 +118,19 @@ export default {
         hidden: false,
       };
       this.updateChart();
+    },
+    getNewWords() {
+      if (this.cards.length === 0) {
+        this.cards = this.usedCards;
+        this.shuffleCards();
+        this.usedCards = [];
+      }
+      this.words = this.cards.pop();
+      this.usedCards.push(this.words)
+      return this.words;
+    },
+    shuffleCards() {
+      this.cards.sort(() => Math.random() - 0.5);
     },
     toggleRandomDataSet() {
       this.randomWave.hidden = !this.randomWave.hidden;
@@ -169,11 +187,18 @@ export default {
 
 .card-holder {
   margin: 20px 0;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+
 }
 
 .md-card {
   width: 160px;
   margin: 0;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

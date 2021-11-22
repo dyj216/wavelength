@@ -15,9 +15,14 @@
           :tooltip-formatter="formatter"
       ></vue-slider>
     </div>
-    <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random</md-button>
-    <md-button class="md-raised md-accent" @click="toggleRandomDataSet()">Toggle random</md-button>
-    <md-button class="md-raised md-primary">New card</md-button>
+    <div>
+      <md-button class="md-raised md-primary" @click="getNewRandom()">Get new random</md-button>
+      <md-button class="md-raised md-accent" @click="toggleRandomDataSet()">Toggle random</md-button>
+      <md-button class="md-raised md-primary">New card</md-button>
+    </div>
+    <div v-if="!this.randomWave.hidden">
+      <p>Wave difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
+    </div>
     <div class="card-holder">
       <md-card class="md-primary">
         <md-card-header>
@@ -71,19 +76,12 @@ export default {
       points: this.getPoints(1000),
       frequency: 0,
       formatter: v => v * 4 + ' %',
+      randomFrequency: 0,
       randomWave: {}
     }
   },
   mounted() {
-    this.randomWave = {
-      label: 'Random wave',
-      borderColor: 'rgba(0,100,200, 1)',
-      backgroundColor: 'rgba(0,0,0,0)',
-      data: this.getSin(this.points, Math.floor(Math.random() * 26)),
-      pointRadius: 0,
-      borderWidth: 7,
-    };
-    this.updateChart();
+    this.getNewRandom();
   },
   methods: {
     updateChart() {
@@ -104,11 +102,12 @@ export default {
           }
     },
     getNewRandom() {
+      this.randomFrequency = Math.floor(Math.random() * 26);
       this.randomWave = {
         label: 'Random wave',
         borderColor: 'rgba(0,100,200, 1)',
         backgroundColor: 'rgba(0,0,0,0)',
-        data: this.getSin(this.points, Math.floor(Math.random() * 26)),
+        data: this.getSin(this.points, this.randomFrequency),
         pointRadius: 0,
         borderWidth: 7,
         hidden: false,
@@ -133,7 +132,19 @@ export default {
       }
       a.push(Math.PI * 2);
       return a;
-    }
+    },
+    getFrequencyDifference () {
+      return Math.abs(this.randomFrequency - this.frequency);
+    },
+    getGuessResult() {
+      let difference = this.getFrequencyDifference();
+      if (difference < 3) {
+        return 3 - difference;
+      }
+      else {
+        return 0;
+      }
+    },
   }
 }
 </script>

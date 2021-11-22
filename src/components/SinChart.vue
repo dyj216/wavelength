@@ -177,7 +177,6 @@ export default {
 .chart {
   border: 1px solid black;
   position: relative;
-  width: 40vw;
   margin: auto;
 }
 

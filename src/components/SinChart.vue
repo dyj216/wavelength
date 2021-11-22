@@ -21,7 +21,7 @@
       <md-button class="md-raised md-primary" @click="getNewWords()">New card</md-button>
     </div>
     <div v-if="!this.randomWave.hidden">
-      <p>Wave difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
+      <p>Random wave: {{this.randomFrequency * 4}} %, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
     </div>
     <div class="card-holder">
       <md-card class="md-primary">

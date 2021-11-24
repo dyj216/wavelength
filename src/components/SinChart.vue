@@ -23,7 +23,7 @@
           :max="25"
           :interval="1"
           :marks="false"
-          :tooltip-placement="'bottom'"
+          :tooltip-placement="'top'"
           :tooltip-formatter="formatter"
       ></vue-slider>
     </div>

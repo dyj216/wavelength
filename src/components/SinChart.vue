@@ -1,5 +1,17 @@
 <template>
   <div class="content">
+    <md-dialog :md-active.sync="dialog">
+      <md-dialog-title>Settings</md-dialog-title>
+      <md-dialog-content>
+        <md-checkbox v-model="advancedWords">Use advanced words too</md-checkbox>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="closeDialog()">OK</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+    <md-button class="md-icon-button settings-button" @click="openDialog()">
+      <md-icon>settings</md-icon>
+    </md-button>
     <div class="chart">
       <line-chart :chart-data="datacollection" :options="options"></line-chart>
     </div>
@@ -21,7 +33,7 @@
       <md-button class="md-raised md-primary" @click="getNewWords()">New card</md-button>
     </div>
     <div v-if="!this.randomWave.hidden">
-      <p>Random wave: {{this.randomFrequency * 4}} %, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
+      <p>Random wave: {{this.randomFrequency * 4}}% / {{100 - this.randomFrequency * 4}}%, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
     </div>
     <div class="card-holder">
       <md-card class="md-primary">
@@ -46,7 +58,7 @@
 import LineChart from './LineChart.js'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-import {cards} from './cards'
+import {cards, advancedCards} from './cards'
 
 export default {
   components: {
@@ -76,17 +88,24 @@ export default {
       },
       points: this.getPoints(1000),
       frequency: 0,
-      formatter: v => v * 4 + ' %',
+      formatter: v => v * 4 + '% / ' + (100 - v * 4) + '%',
       randomFrequency: 0,
       randomWave: {},
-      cards: cards,
+      cards: [],
       usedCards: [],
       words: [],
+      dialog: false,
+      advancedWords: false,
     }
   },
   mounted() {
-    this.getNewRandom();
+    if (localStorage.getItem("advancedWords") === "true") {
+      this.advancedWords = localStorage.advancedWords === "true";
+    }
+    this.cards = this.advancedWords ? cards.concat(advancedCards) : cards;
+    this.shuffleCards();
     this.getNewWords();
+    this.getNewRandom();
   },
   methods: {
     updateChart() {
@@ -163,6 +182,22 @@ export default {
         return 0;
       }
     },
+    openDialog() {
+      if (localStorage.getItem("advancedWords")) {
+        this.advancedWords = localStorage.advancedWords === "true";
+      }
+      this.dialog = true;
+    },
+    closeDialog() {
+      if (this.advancedWords !== (localStorage.advancedWords === "true")) {
+        this.cards = this.advancedWords ? cards.concat(advancedCards) : [...cards];
+        this.shuffleCards();
+        this.usedCards = [];
+        this.getNewWords();
+      }
+      localStorage.advancedWords = this.advancedWords;
+      this.dialog = false;
+    }
   }
 }
 </script>
@@ -177,7 +212,7 @@ export default {
 .chart {
   border: 1px solid black;
   position: relative;
-  margin: auto;
+  margin: 0;
 }
 
 .slider-holder {
@@ -194,10 +229,17 @@ export default {
 }
 
 .md-card {
-  width: 160px;
+  width: 240px;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.settings-button {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  opacity: 0.5;
 }
 </style>

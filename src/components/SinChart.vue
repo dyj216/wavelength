@@ -33,7 +33,7 @@
       <md-button class="md-raised md-primary" @click="getNewWords()">New card</md-button>
     </div>
     <div v-if="!this.randomWave.hidden">
-      <p>Random wave: {{this.randomFrequency * 4}}% / {{100 - this.randomFrequency * 4}}%, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
+      <p>Random wave: {{100 - this.randomFrequency * 4}}% / {{this.randomFrequency * 4}}%, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
     </div>
     <div class="card-holder">
       <md-card class="md-primary">
@@ -88,7 +88,7 @@ export default {
       },
       points: this.getPoints(1000),
       frequency: 0,
-      formatter: v => v * 4 + '% / ' + (100 - v * 4) + '%',
+      formatter: v => (100 - v * 4) + '%' + '% / ' + v * 4,
       randomFrequency: 0,
       randomWave: {},
       cards: [],

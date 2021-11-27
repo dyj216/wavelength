@@ -4,6 +4,7 @@
       <md-dialog-title>Settings</md-dialog-title>
       <md-dialog-content>
         <md-checkbox v-model="advancedWords">Use advanced words too</md-checkbox>
+        <md-checkbox v-model="displayChart">Display chart</md-checkbox>
       </md-dialog-content>
       <md-dialog-actions>
         <md-button class="md-primary" @click="closeDialog()">OK</md-button>
@@ -12,7 +13,7 @@
     <md-button class="md-icon-button settings-button" @click="openDialog()">
       <md-icon>settings</md-icon>
     </md-button>
-    <div class="chart">
+    <div v-if="displayChart" class="chart">
       <line-chart :chart-data="datacollection" :options="options"></line-chart>
     </div>
     <div class="slider-holder">
@@ -98,6 +99,7 @@ export default {
       words: [],
       dialog: false,
       advancedWords: false,
+      displayChart: false,
       sliderProcess: dotsPos => [
           [0, dotsPos[0], {backgroundColor: '#448aff'}],
           [dotsPos[0], 100, {backgroundColor: '#ff5252'}],
@@ -222,7 +224,7 @@ export default {
 }
 
 .slider-holder {
-  margin: 30px 0;
+  margin: 50px 0;
 }
 
 .card-holder {
@@ -231,7 +233,10 @@ export default {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: stretch;
+}
 
+.md-checkbox {
+  display: flex;
 }
 
 .md-card {

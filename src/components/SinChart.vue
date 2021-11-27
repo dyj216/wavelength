@@ -35,7 +35,7 @@
       <md-button class="md-raised md-primary" @click="getNewWords()">New card</md-button>
     </div>
     <div v-if="!this.randomWave.hidden">
-      <p>Random wave: {{100 - this.randomFrequency * 4}}% / {{this.randomFrequency * 4}}%, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
+      <p>Random wave: <span class="random-left">{{this.randomFrequency * 4}}% </span><span class="random-right">{{100 - this.randomFrequency * 4}}%</span>, difference: {{this.getFrequencyDifference() * 4}} %, points: {{this.getGuessResult()}}</p>
     </div>
     <div class="card-holder">
       <md-card class="md-primary">
@@ -90,7 +90,7 @@ export default {
       },
       points: this.getPoints(1000),
       frequency: 0,
-      formatter: v => (100 - v * 4) + '% / ' + v * 4 + '%',
+      formatter: v => v * 4 + '% ' + (100 - v * 4) + '%',
       randomFrequency: 0,
       randomWave: {},
       cards: [],
@@ -99,8 +99,8 @@ export default {
       dialog: false,
       advancedWords: false,
       sliderProcess: dotsPos => [
-          [0, dotsPos[0], {backgroundColor: '#ff5252'}],
-          [dotsPos[0], 100, {backgroundColor: '#448aff'}],
+          [0, dotsPos[0], {backgroundColor: '#448aff'}],
+          [dotsPos[0], 100, {backgroundColor: '#ff5252'}],
       ],
     }
   },
@@ -247,5 +247,21 @@ export default {
   top: -48px;
   right: 0;
   opacity: 0.5;
+}
+
+.vue-slider-dot-tooltip-inner {
+  background: linear-gradient(90deg, #448aff 50%, #ff5252 50%);
+}
+
+.random-left {
+  background: #448aff;
+  color: white;
+  padding: 10px;
+}
+
+.random-right {
+  background: #ff5252;
+  color: white;
+  padding: 10px;
 }
 </style>

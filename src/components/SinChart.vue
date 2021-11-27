@@ -23,8 +23,10 @@
           :max="25"
           :interval="1"
           :marks="false"
+          :tooltip="'always'"
           :tooltip-placement="'top'"
           :tooltip-formatter="formatter"
+          :process="sliderProcess"
       ></vue-slider>
     </div>
     <div>
@@ -88,7 +90,7 @@ export default {
       },
       points: this.getPoints(1000),
       frequency: 0,
-      formatter: v => (100 - v * 4) + '%' + '% / ' + v * 4,
+      formatter: v => (100 - v * 4) + '% / ' + v * 4 + '%',
       randomFrequency: 0,
       randomWave: {},
       cards: [],
@@ -96,6 +98,10 @@ export default {
       words: [],
       dialog: false,
       advancedWords: false,
+      sliderProcess: dotsPos => [
+          [0, dotsPos[0], {backgroundColor: '#ff5252'}],
+          [dotsPos[0], 100, {backgroundColor: '#448aff'}],
+      ],
     }
   },
   mounted() {
